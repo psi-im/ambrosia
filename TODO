@@ -1,0 +1,5 @@
+fix endian in iris/xmpp-core/hash.cpp
+presence stuff
+if same client resource tries to login, drop other client session
+if a client connection is lost, handle as unavailable
+if server connection is lost, bounce the stanzas
