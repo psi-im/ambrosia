@@ -153,14 +153,14 @@ int AdvancedConnector::Proxy::pollInterval() const
 	return v_poll;
 }
 
-void AdvancedConnector::Proxy::setHttpConnect(const QString &host, Q_UINT16 port)
+void AdvancedConnector::Proxy::setHttpConnect(const QString &host, quint16 port)
 {
 	t = HttpConnect;
 	v_host = host;
 	v_port = port;
 }
 
-void AdvancedConnector::Proxy::setHttpPoll(const QString &host, Q_UINT16 port, const QString &url)
+void AdvancedConnector::Proxy::setHttpPoll(const QString &host, quint16 port, const QString &url)
 {
 	t = HttpPoll;
 	v_host = host;
@@ -168,7 +168,7 @@ void AdvancedConnector::Proxy::setHttpPoll(const QString &host, Q_UINT16 port, c
 	v_url = url;
 }
 
-void AdvancedConnector::Proxy::setSocks(const QString &host, Q_UINT16 port)
+void AdvancedConnector::Proxy::setSocks(const QString &host, quint16 port)
 {
 	t = Socks;
 	v_host = host;
@@ -284,7 +284,7 @@ void AdvancedConnector::cleanup()
 	d->proxy = proxy;
 }*/
 
-void AdvancedConnector::setOptHostPort(const QString &host, Q_UINT16 _port)
+void AdvancedConnector::setOptHostPort(const QString &host, quint16 _port)
 {
 	if(d->mode != Idle)
 		return;

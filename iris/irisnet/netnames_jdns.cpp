@@ -253,6 +253,7 @@ signals:
 private slots:
 	void jdns_debug(const QStringList &lines)
 	{
+		Q_UNUSED(lines);
 		//for(int n = 0; n < lines.count(); ++n)
 		//	printf("jdns: %s\n", qPrintable(lines[n]));
 		//emit debug(lines);
@@ -505,9 +506,9 @@ private slots:
 			delete i;
 
 			NameResolver::Error error = NameResolver::ErrorGeneric;
-			if(e == QJDns::ErrorNXDomain)
+			if(e == JDnsSharedRequest::ErrorNXDomain)
 				error = NameResolver::ErrorNoName;
-			else if(e == QJDns::ErrorTimeout)
+			else if(e == JDnsSharedRequest::ErrorTimeout)
 				error = NameResolver::ErrorTimeout;
 			else // ErrorGeneric or ErrorNoNet
 				error = NameResolver::ErrorGeneric;
@@ -917,6 +918,7 @@ public:
 
 	virtual void browse_stop(int id)
 	{
+		Q_UNUSED(id);
 	}
 
 	virtual int resolve_start(const QByteArray &name)
@@ -935,6 +937,7 @@ public:
 
 	virtual void resolve_stop(int id)
 	{
+		Q_UNUSED(id);
 	}
 
 	virtual int publish_start(const QString &instance, const QString &type, int port, const QMap<QString,QByteArray> &attributes)
@@ -1008,14 +1011,19 @@ public:
 
 	virtual int publish_update(const QMap<QString,QByteArray> &attributes)
 	{
+		Q_UNUSED(attributes);
+		return 0;
 	}
 
 	virtual void publish_cancel(int id)
 	{
+		Q_UNUSED(id);
 	}
 
 	virtual int publish_extra_start(int pub_id, const NameRecord &name)
 	{
+		Q_UNUSED(pub_id);
+
 		JDnsSharedRequest *req = new JDnsSharedRequest(global->mul);
 		QJDns::Record rec;
 		rec.type = 10;
@@ -1032,10 +1040,14 @@ public:
 
 	virtual int publish_extra_update(int id, const NameRecord &name)
 	{
+		Q_UNUSED(id);
+		Q_UNUSED(name);
+		return 0;
 	}
 
 	virtual void publish_extra_cancel(int id)
 	{
+		Q_UNUSED(id);
 	}
 
 private slots:

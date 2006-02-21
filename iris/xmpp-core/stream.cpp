@@ -103,7 +103,7 @@ static QDomElement changeNS(const QDomElement &e, const QString &oldns, const QS
 
 	// copy attributes
 	QDomNamedNodeMap al = e.attributes();
-	for(x = 0; x < al.count(); ++x) {
+	for(x = 0; x < (uint)al.count(); ++x) {
 		QDomAttr a = al.item(x).cloneNode().toAttr();
 		i.setAttributeNodeNS(a);
 	}

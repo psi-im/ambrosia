@@ -105,22 +105,22 @@ namespace XMPP
 
 			int type() const;
 			QString host() const;
-			Q_UINT16 port() const;
+			quint16 port() const;
 			QString url() const;
 			QString user() const;
 			QString pass() const;
 			int pollInterval() const;
 
-			void setHttpConnect(const QString &host, Q_UINT16 port);
-			void setHttpPoll(const QString &host, Q_UINT16 port, const QString &url);
-			void setSocks(const QString &host, Q_UINT16 port);
+			void setHttpConnect(const QString &host, quint16 port);
+			void setHttpPoll(const QString &host, quint16 port, const QString &url);
+			void setSocks(const QString &host, quint16 port);
 			void setUserPass(const QString &user, const QString &pass);
 			void setPollInterval(int secs);
 
 		private:
 			int t;
 			QString v_host, v_url;
-			Q_UINT16 v_port;
+			quint16 v_port;
 			QString v_user, v_pass;
 			int v_poll;
 		};*/

@@ -56,7 +56,7 @@ static QDomElement stripExtraNS(const QDomElement &e)
 
 	// copy attributes
 	QDomNamedNodeMap al = e.attributes();
-	for(x = 0; x < al.count(); ++x) {
+	for(x = 0; x < (uint)al.count(); ++x) {
 		QDomAttr a = al.item(x).cloneNode().toAttr();
 
 		// don't show xml namespace
@@ -326,7 +326,7 @@ QString XmlProtocol::elementToString(const QDomElement &e, bool clip)
 		// scan the root attributes for 'xmlns' (oh joyous hacks)
 		QDomNamedNodeMap al = elem.attributes();
 		uint n;
-		for(n = 0; n < al.count(); ++n) {
+		for(n = 0; n < (uint)al.count(); ++n) {
 			QDomAttr a = al.item(n).toAttr();
 			QString s = a.name();
 			int x = s.indexOf(':');
@@ -339,7 +339,7 @@ QString XmlProtocol::elementToString(const QDomElement &e, bool clip)
 				break;
 			}
 		}
-		if(n >= al.count()) {
+		if(n >= (uint)al.count()) {
 			// if we get here, then no appropriate ns was found.  use root then..
 			ns = elem.namespaceURI();
 		}

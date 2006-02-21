@@ -119,7 +119,7 @@ void BSocket::ensureSocket()
 	}
 }
 
-void BSocket::connectToHost(const QString &host, Q_UINT16 port)
+void BSocket::connectToHost(const QString &host, quint16 port)
 {
 	reset(true);
 	d->host = host;
@@ -239,7 +239,7 @@ QHostAddress BSocket::address() const
 		return QHostAddress();
 }
 
-Q_UINT16 BSocket::port() const
+quint16 BSocket::port() const
 {
 	if(d->qsock)
 		return d->qsock->localPort();
@@ -255,7 +255,7 @@ QHostAddress BSocket::peerAddress() const
 		return QHostAddress();
 }
 
-Q_UINT16 BSocket::peerPort() const
+quint16 BSocket::peerPort() const
 {
 	if(d->qsock)
 		return d->qsock->peerPort();
