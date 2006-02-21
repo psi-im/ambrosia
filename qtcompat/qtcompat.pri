@@ -2,6 +2,7 @@ QTCOMPAT_BASE = $$PWD
 INCLUDEPATH += $$QTCOMPAT_BASE
 
 HEADERS += \
+	$$QTCOMPAT_BASE/q3cleanuphandler.h \
 	$$QTCOMPAT_BASE/q3ptrcollection.h \
 	$$QTCOMPAT_BASE/q3gvector.h \
 	$$QTCOMPAT_BASE/q3glist.h \
@@ -14,7 +15,7 @@ HEADERS += \
 	$$QTCOMPAT_BASE/q3ptrdict.h \
 	$$QTCOMPAT_BASE/q3socketdevice.h \
 	$$QTCOMPAT_BASE/q3serversocket.h \
-	$$QTCOMPAT_BASE/q3dns.h
+	#$$QTCOMPAT_BASE/q3dns.h
 
 SOURCES += \
 	$$QTCOMPAT_BASE/q3ptrcollection.cpp \
@@ -24,5 +25,5 @@ SOURCES += \
 	$$QTCOMPAT_BASE/q3socketdevice.cpp \
 	$$QTCOMPAT_BASE/q3socketdevice_unix.cpp \
 	$$QTCOMPAT_BASE/q3serversocket.cpp \
-	$$QTCOMPAT_BASE/q3dns.cpp
+	#$$QTCOMPAT_BASE/q3dns.cpp
 
