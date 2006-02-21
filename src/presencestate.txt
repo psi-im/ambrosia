@@ -1,0 +1,296 @@
+
+item
+{
+	user u;
+	presence stanza;
+	list<jid> dontsend;
+};
+
+dpitem
+{
+	user u;
+	jid to;
+	presence stanza;
+};
+
+list<item> pres;
+list<dpitem> dplist;
+
+incomingFromClient(presence in, user u)
+{
+	// assumptions:
+	// in.to:   optional
+	// in.from: required
+	// in.type: optional
+
+	bool sub = false;
+	if(in.type == "subscribe"
+		|| in.type == "subscribed"
+		|| in.type == "unsubscribe"
+		|| in.type == "unsubscribed"
+	)
+	{
+		sub = true;
+	}
+
+	// subscriptions require to/from
+	if(sub && !hasTo)
+	{
+		// skip
+		return;
+	}
+
+	if(sub)
+		incomingFromClientSub(in, u);
+	else
+		incomingFromClientNormal(in, u);
+}
+
+incomingFromOutside(presence in)
+{
+	// assumptions:
+	// in.to:   required
+	// in.from: required
+	// in.type: optional
+
+	bool sub = false;
+	if(in.type == "subscribe"
+		|| in.type == "subscribed"
+		|| in.type == "unsubscribe"
+		|| in.type == "unsubscribed"
+	)
+	{
+		sub = true;
+	}
+
+	// subscriptions require to/from
+	if(sub && !hasTo)
+	{
+		// skip
+		return;
+	}
+
+	if(sub)
+		incomingFromOutsideSub(in);
+	else
+		incomingFromOutsideNormal(in);
+}
+
+incomingFromClientSub(presence in, user u)
+{
+}
+
+incomingFromOutsideSub(presence in)
+{
+}
+
+incomingFromClientNormal(presence in, user u)
+{
+	// clients shouldn't send presence probes or errors
+	if(in.type == "probe" || in.type == "error")
+	{
+		// skip
+		return;
+	}
+
+	bool direct = in.hasTo;
+	bool avail = true;
+	if(in.type == "unavailable")
+		avail = false;
+
+	if(direct)
+	{
+		dpitem dp = dplist.find(u, in.to);
+
+		// don't have one for this combo yet?  make it
+		if(!dp)
+		{
+			dp = new dpitem;
+			dplist += dp;
+		}
+
+		dp.stanza = in;
+
+		presence out = in;
+		if(forThisHost(out.to))
+			incomingFromOutsideNormal(out);
+		else
+			router.send(out);
+	}
+	else
+	{
+		item i = pres.find(u);
+
+		// initial ?
+		bool initial = false;
+		if(!i)
+		{
+			initial = true;
+			i = new item;
+			i.u = u;
+			i.stanza = in;
+			pres += i;
+		}
+
+		// initial can't be unavailable
+		if(initial && !avail)
+		{
+			// skip
+			return;
+		}
+
+		// TODO: send to own available resources
+
+		if(initial)
+		{
+			// send presence probes to roster items of to/both
+			//   from = u.fulljid
+			//   to   = roster jid
+			foreach(r in u.roster)
+			{
+				if(r.sub == "to" || r.sub == "both")
+				{
+					presence out;
+					out.from = u.fulljid;
+					out.to = r.jid;
+					out.type = "probe";
+					if(forThisHost(out.to))
+						incomingFromOutsideNormal(out);
+					else
+						router.send(out);
+				}
+			}
+		}
+
+		// broadcast presence to roster items of from/both
+		//   from = u.fulljid
+		//   to   = roster.jid
+		foreach(r in u.roster)
+		{
+			if(r.sub == "from" || r.sub == "both")
+			{
+				// skip
+				if(!initial && i.dontsend.contains(r.jid))
+					continue;
+
+				presence out = in;
+				out.from = u.fulljid;
+				out.to = r.jid;
+				if(forThisHost(out.to))
+					incomingFromOutsideNormal(out);
+				else
+					router.send(out);
+			}
+		}
+
+		// send unavailable to all jids that the user has sent available directed presence to
+		if(!initial && !avail)
+		{
+			foreach(di in dplist)
+			{
+				if(di.u == u)
+				{
+					presence out = in;
+					out.from = u.fulljid;
+					out.to = di.jid;
+					if(forThisHost(out.to))
+						incomingFromOutsideNormal(out);
+					else
+						router.send(out);
+				}
+			}
+		}
+
+		// if going unavailable, remove all state
+		if(!avail)
+		{
+			pres.remove(i);
+			foreach(di in dplist)
+			{
+				if(di.u == u)
+					dplist.remove(di);
+			}
+		}
+
+		// send to all contacts on this server where
+		//   the user's roster contains target of from/both
+		//   the target's roster contains user of to/both
+		// NOTE: we can cheat and not do the above, based on the way we loopback things
+	}
+}
+
+incomingFromOutsideNormal(presence in)
+{
+	User u = find_session(in.to)
+
+	// better be going to one of our own users
+	if(!u)
+	{
+		// skip
+		return;
+	}
+
+	if(in.type == "error")
+	{
+		item i = pres.find(u);
+
+		// we haven't sent presence?
+		if(!i)
+		{
+			// skip
+			return;
+		}
+
+		// FIXME: deal only with bare addresses, or?
+		if(!i.dontsend.contains(in.from))
+			i.dontsend += in.from;
+
+		// pass to the client
+		router.send(in);
+		return;
+	}
+	else if(in.type == "probe")
+	{
+		// is there a directed presence?
+		dpitem di = dplist.find(u, in.from);
+		if(di)
+		{
+			presence out = di.stanza;
+			out.from = u.fulljid;
+			out.to = di.to;
+			router.send(out);
+			return;
+		}
+
+		// is the sender from the roster?
+		rosteritem r = u.roster.find(in.from); // bare-jid compare
+		// TODO: for bare-jid compare, this means we could get multiple items.
+		//       in that case, support doing this operation on more than one...
+		if(r && (r.sub == "from" || r.sub == "both")
+		{
+			presence out;
+			item i = pres.find(u);
+			if(i)
+			{
+				out = i.stanza;
+			}
+			else
+			{
+				out = new presence;
+				out.type = "unavailable";
+			}
+
+			out.from = u.fulljid;
+			out.to = in.from;
+			router.send(out);
+		}
+		else
+		{
+			// TODO: presence error
+		}
+	}
+	else
+	{
+		router.send(in);
+	}
+}
