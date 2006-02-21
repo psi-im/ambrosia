@@ -23,7 +23,7 @@
 #include "qca-tls.h"
 #include "qca-sasl.h"
 
-#define SERVER_VERSION "0.1"
+#define SERVER_VERSION "0.2"
 
 #define NS_IMSESSION "urn:ietf:params:xml:ns:xmpp-session"
 #define NS_ROSTER    "jabber:iq:roster"
