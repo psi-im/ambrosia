@@ -1692,6 +1692,7 @@ bool CoreProtocol::normalStep(const QDomElement &e)
 			}
 			else {
 				// TODO
+				return true;
 			}
 		}
 	}
