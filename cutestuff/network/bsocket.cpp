@@ -18,16 +18,18 @@
  *
  */
 
-#include"bsocket.h"
+#include "bsocket.h"
 
-#include"safedelete.h"
+#include "safedelete.h"
 #ifndef NO_NDNS
-#include"ndns.h"
+#include "ndns.h"
 #endif
-#include"srvresolver.h"
+#include "srvresolver.h"
+
+//#define BS_DEBUG
 
 #ifdef BS_DEBUG
-#include<stdio.h>
+#include <stdio.h>
 #endif
 
 #define READBUFSIZE 65536
@@ -113,7 +115,7 @@ void BSocket::ensureSocket()
 		connect(d->qsock, SIGNAL(disconnected()), SLOT(qs_closed()));
 		connect(d->qsock, SIGNAL(readyRead()), SLOT(qs_readyRead()));
 		connect(d->qsock, SIGNAL(bytesWritten(qint64)), SLOT(qs_bytesWritten(qint64)));
-		connect(d->qsock, SIGNAL(error(SocketError)), SLOT(qs_error(SocketError)));
+		connect(d->qsock, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(qs_error(QAbstractSocket::SocketError)));
 	}
 }
 
@@ -188,11 +190,8 @@ void BSocket::write(const QByteArray &a)
 	if(d->state != Connected)
 		return;
 #ifdef BS_DEBUG
-	QCString cs;
-	cs.resize(a.size()+1);
-	memcpy(cs.data(), a.data(), a.size());
-	QString s = QString::fromUtf8(cs);
-	fprintf(stderr, "BSocket: writing [%d]: {%s}\n", a.size(), cs.data());
+	QString s = QString::fromUtf8(a);
+	fprintf(stderr, "BSocket: writing [%d]: {%s}\n", a.size(), s.latin1());
 #endif
 	d->qsock->write(a.data(), a.size());
 }
@@ -211,10 +210,7 @@ QByteArray BSocket::read(int bytes)
 		block = ByteStream::read(bytes);
 
 #ifdef BS_DEBUG
-	QCString cs;
-	cs.resize(block.size()+1);
-	memcpy(cs.data(), block.data(), block.size());
-	QString s = QString::fromUtf8(cs);
+	QString s = QString::fromUtf8(block);
 	fprintf(stderr, "BSocket: read [%d]: {%s}\n", block.size(), s.latin1());
 #endif
 	return block;
