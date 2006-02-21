@@ -1,7 +1,7 @@
-Ambrosia XMPP Server 0.1
+Ambrosia XMPP Server 0.2
 ------------------------
 Author: Justin Karneges <justin@affinix.com>
-Date: February 6th, 2005
+Date: February 20th, 2006
 
 Ambrosia is a proof of concept XMPP/Jabber server.  It does not have many
 features, and is not intended for use in a production environment.  It
@@ -12,11 +12,12 @@ Features:
   - Client connections, using SASL or iq:auth methods
   - Server to server connectivity
   - Message delivery
+  - Roster, Subscriptions, Presence
+  - VCards
   - SSL/TLS and SASL-based encryption for clients
 
 Problems:
-  - No roster
-  - No presence
-  - Can't save vcards
+  - No offline stored events (messages or subscription packets)
+  - Unsubscribing is not supported properly
   - Probably tons of bugs and memory leaks
 
