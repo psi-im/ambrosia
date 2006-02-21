@@ -40,9 +40,12 @@ public:
 
 	void write(const XMPP::Stanza &s);
 
+	XMPP::Jid userSessionJid(const XMPP::Jid &possiblyBare);
+
 signals:
 	void readyRead(const XMPP::Stanza &);
 	void stanzaWriteFailed();
+	void userSessionGone(const XMPP::Jid &);
 
 public:
 	class Private;

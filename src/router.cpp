@@ -402,9 +402,17 @@ void Router::Private::s2s_connectionReady(int s)
 void Router::Private::sess_done()
 {
 	Session *sess = (Session *)sender();
+
+	Jid userSession;
+	if(sess->mode == Client && sess->stream)
+		userSession = sess->stream->jid();
+
 	sess->deleteLater();
 	int n = list.indexOf(sess);
 	list.removeAt(n);
+
+	if(!userSession.isEmpty())
+		emit parent->userSessionGone(userSession);
 }
 
 void Router::Private::read(const Stanza &s)
@@ -461,7 +469,7 @@ void Router::setCertificate(const QCA::Cert &cert, const QCA::RSAKey &key)
 
 bool Router::start(const QString &host)
 {
-	d->realm = QDns::getHostName();
+	d->realm = QHostInfo::localHostName();
 	if(!host.isEmpty())
 		d->host = host;
 	else
@@ -478,6 +486,20 @@ void Router::stop()
 void Router::write(const XMPP::Stanza &s)
 {
 	d->write(s);
+}
+
+XMPP::Jid Router::userSessionJid(const XMPP::Jid &possiblyBare)
+{
+	for(int n = 0; n < d->list.count(); ++n)
+	{
+		Session *s = d->list[n];
+		if(s->mode == Client)
+		{
+			if(s->stream->jid().compare(possiblyBare, false))
+				return s->stream->jid();
+		}
+	}
+	return XMPP::Jid();
 }
 
 #include "router.moc"
