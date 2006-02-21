@@ -3,6 +3,9 @@
   <profile>ambrosia.pro</profile>
   <byoq/>
   <moddir>qcm</moddir>
+  <dep type='qt41'>
+    <required/>
+  </dep>
   <dep type='openssl'>
     <required/>
   </dep>
