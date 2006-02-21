@@ -47,7 +47,7 @@
     it would be nice if Qt had this already.
 */
 
-#include"parser.h"
+#include "parser.h"
 
 using namespace XMPP;
 

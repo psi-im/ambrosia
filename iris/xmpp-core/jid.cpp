@@ -18,9 +18,9 @@
  *
  */
 
-#include"xmpp.h"
+#include "xmpp.h"
 
-#include<stringprep.h>
+#include <stringprep.h>
 
 using namespace XMPP;
 

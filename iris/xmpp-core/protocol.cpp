@@ -23,14 +23,14 @@
 //       report ErrProtocol if server uses wrong NS
 //       use send() instead of writeElement() in CoreProtocol
 
-#include"protocol.h"
+#include "protocol.h"
 
-#include<qca.h>
-#include"base64.h"
-#include"hash.h"
+#include <qca.h>
+#include "base64.h"
+#include "hash.h"
 
 #ifdef XMPP_TEST
-#include"td.h"
+#include "td.h"
 #endif
 
 using namespace XMPP;
@@ -192,7 +192,7 @@ void BasicProtocol::reset()
 void BasicProtocol::sendStanza(const QDomElement &e)
 {
 	SendItem i;
-	i.stanzaToSend = e;
+	i.stanzaToSend = doc.importNode(e, true).toElement();
 	sendList += i;
 }
 
@@ -431,8 +431,8 @@ QDomElement BasicProtocol::docElement()
 		e.setAttribute("id", id);
 	if(!lang.isEmpty())
 		e.setAttributeNS(NS_XML, "xml:lang", lang);
-	if(version.major > 0 || version.minor > 0)
-		e.setAttribute("version", QString::number(version.major) + '.' + QString::number(version.minor));
+	//if(version.major > 0 || version.minor > 0)
+	//	e.setAttribute("version", QString::number(version.major) + '.' + QString::number(version.minor));
 
 	return e;
 }
@@ -667,6 +667,9 @@ void CoreProtocol::startServerOut(const QString &_to)
 {
 	server = true;
 	to = _to;
+	oldOnly = true;
+	//if(oldOnly)
+		version = Version(0,0);
 	startConnect();
 }
 

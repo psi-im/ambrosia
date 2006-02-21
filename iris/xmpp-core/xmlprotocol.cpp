@@ -18,9 +18,9 @@
  *
  */
 
-#include"xmlprotocol.h"
+#include "xmlprotocol.h"
 
-#include"bytestream.h"
+#include "bytestream.h"
 
 using namespace XMPP;
 

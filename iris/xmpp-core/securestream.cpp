@@ -26,10 +26,10 @@
     but future layers might not.
 */
 
-#include"securestream.h"
+#include "securestream.h"
 
 #ifdef USE_TLSHANDLER
-#include"xmpp.h"
+#include "xmpp.h"
 #endif
 
 //----------------------------------------------------------------------------

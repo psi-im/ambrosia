@@ -18,10 +18,10 @@
  *
  */
 
-#include"xmpp.h"
+#include "xmpp.h"
 
-#include<qtimer.h>
-#include"qca.h"
+#include <qtimer.h>
+#include "qca.h"
 
 using namespace XMPP;
 

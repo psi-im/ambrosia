@@ -21,8 +21,8 @@
 #ifndef SECURESTREAM_H
 #define SECURESTREAM_H
 
-#include<qca.h>
-#include"bytestream.h"
+#include <qca.h>
+#include "bytestream.h"
 
 #define USE_TLSHANDLER
 

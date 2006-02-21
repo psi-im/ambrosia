@@ -42,19 +42,19 @@
     - sasl anonymous
 */
 
-#include"xmpp.h"
+#include "xmpp.h"
 
-#include<qca.h>
-#include<stdlib.h>
-#include"bytestream.h"
-#include"base64.h"
-#include"hash.h"
-#include"simplesasl.h"
-#include"securestream.h"
-#include"protocol.h"
+#include <qca.h>
+#include <stdlib.h>
+#include "bytestream.h"
+#include "base64.h"
+#include "hash.h"
+#include "simplesasl.h"
+#include "securestream.h"
+#include "protocol.h"
 
 #ifdef XMPP_TEST
-#include"td.h"
+#include "td.h"
 #endif
 
 #define XMPP_DEBUG
@@ -1071,7 +1071,7 @@ void ClientStream::write(const Stanza &s)
 			d->srv.sendStanza(s.element());
 		else
 			d->client.sendStanza(s.element());
-		processNext();
+		QMetaObject::invokeMethod(this, "processNext", Qt::QueuedConnection);
 	}
 }
 

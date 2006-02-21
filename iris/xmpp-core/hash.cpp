@@ -18,7 +18,7 @@
  *
  */
 
-#include"hash.h"
+#include "hash.h"
 
 namespace XMPP
 {
@@ -66,7 +66,7 @@ static void ensureEndian()
   ghost@aladdin.com
 
  */
-/* $Id: hash.cpp,v 1.1.1.1 2005-02-07 07:09:32 andbit Exp $ */
+/* $Id: hash.cpp,v 1.2 2006-02-21 02:20:50 andbit Exp $ */
 /*
   Independent implementation of MD5 (RFC 1321).
 

@@ -1,3 +1,5 @@
+include($$IRIS_BASE/irisnet/irisnet.pri)
+
 # libidn
 LIBIDN_BASE = $$IRIS_BASE/libidn
 CONFIG += libidn

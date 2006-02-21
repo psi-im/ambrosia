@@ -21,7 +21,7 @@
 #ifndef SIMPLESASL_H
 #define SIMPLESASL_H
 
-#include"qcaprovider.h"
+#include "qcaprovider.h"
 
 namespace XMPP
 {

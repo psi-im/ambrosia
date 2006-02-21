@@ -539,12 +539,13 @@ namespace XMPP
 		void doNoop();
 		void doReadyRead();
 
+		void processNext();
+
 	private:
 		class Private;
 		Private *d;
 
 		void reset(bool all=false);
-		void processNext();
 		int convertedSASLCond() const;
 		bool handleNeed();
 		void handleError();

@@ -29,23 +29,23 @@
   greatly simplify this class.  - Sep 3rd, 2003.
 */
 
-#include"xmpp.h"
+#include "xmpp.h"
 
-#include<qca.h>
-#include"safedelete.h"
+#include <qca.h>
+#include "safedelete.h"
 
 #ifdef NO_NDNS
-#include<q3dns.h>
+#include <q3dns.h>
 #else
-#include"ndns.h"
+#include "ndns.h"
 #endif
 
-#include"srvresolver.h"
-#include"bsocket.h"
-#include"httpconnect.h"
-#include"httppoll.h"
-#include"socks.h"
-#include"hash.h"
+#include "srvresolver.h"
+#include "bsocket.h"
+#include "httpconnect.h"
+#include "httppoll.h"
+#include "socks.h"
+#include "hash.h"
 
 #define XMPP_DEBUG
 

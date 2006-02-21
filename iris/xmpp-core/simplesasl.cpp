@@ -18,11 +18,11 @@
  *
  */
 
-#include"simplesasl.h"
+#include "simplesasl.h"
 
-#include<qca.h>
-#include<stdlib.h>
-#include"base64.h"
+#include <qca.h>
+#include <stdlib.h>
+#include "base64.h"
 
 namespace XMPP
 {
